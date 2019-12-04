@@ -1,13 +1,16 @@
-import axios from "./ajax"
+import ajax from "./ajax"
 
-export default {
-  login
+export {
+  reqLogin
 }
 
-function login(username,password){
-  axios({
+function reqLogin({username,password}){
+  return ajax({
     method:"post",
-    url:"/"
+    url:"/login",
+    data:{
+      username,
+      password
+    }
   })
-
 }

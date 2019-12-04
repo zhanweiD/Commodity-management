@@ -1,6 +1,8 @@
 import React from "react"
-import { Form, Icon, Input, Button} from 'antd';
+import { Form, Icon, Input, Button,message} from 'antd';
 
+
+import {reqLogin} from "../../api"
 import logo from "./images/logo.png"
 import "./login.less"
 class Login extends React.Component{
@@ -20,14 +22,24 @@ class Login extends React.Component{
     }
     handleSubmit = e => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields(async(err, values) => {
           if (!err) {
-            console.log('发送Ajax请求', values);
+            const result=await reqLogin(values)
+            if(result.status===0){
+                const user=result.data
+                localStorage.setItem("key-user",JSON.stringify(user))
+                this.props.history.replace('/')
+                message.success("登录成功")
+
+            }
           }
         });
       };
     render(){
         const { getFieldDecorator } = this.props.form;
+        if(localStorage.getItem("key-user")){
+            this.props.history.replace("/")
+        }
         return(
             <div className="login">
                 <header className="login-header">
