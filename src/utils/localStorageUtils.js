@@ -10,7 +10,8 @@ function saveUser(user){
   store.set("key_user",user)
 }
 function getUser(){
-  return store.get("key_user")
+  //防止undefined。属性报错，{}。属性不报错
+  return store.get("key_user") || {}
 }
 function removeUser(){
   store.remove("key_user")

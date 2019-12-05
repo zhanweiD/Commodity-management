@@ -1,11 +1,12 @@
 import React from "react"
+import {Link,withRouter} from "react-router-dom"
 import { Layout, Menu, Icon } from 'antd'
 
 import menuConfig from "../../config/menuConfig"
 import logo from "../../assets/images/logo.png"
 import "./leftNav.less"
 
-export default class LeftNav extends React.Component{
+class LeftNav extends React.Component{
    //方法一，使用数组map方法遍历生产menu。item
   createMenu=(menu)=>{
     const { SubMenu } = Menu
@@ -13,8 +14,10 @@ export default class LeftNav extends React.Component{
       if(!item.children){
         return (
           <Menu.Item key={item.key}>
-            <Icon type={item.icon} />
-            <span>{item.title}</span>
+            <Link to={item.key}>
+              <Icon type={item.icon} />
+              <span>{item.title}</span>
+            </Link>
           </Menu.Item>
         )
       }
@@ -41,11 +44,18 @@ export default class LeftNav extends React.Component{
       if(!now.children) {
         pre.push(
           (<Menu.Item key={now.key}>
-            <Icon type={now.icon} />
-            <span>{now.title}</span>
+              <Link to={now.key}>
+                <Icon type={now.icon} />
+                <span>{now.title}</span>
+              </Link>
           </Menu.Item>
         ))
       }else{
+        //根据孩子的key找到父亲的key
+        const childrenKey=this.props.location.pathname
+        if(now.children.find(item=>item.key===childrenKey)){
+          this.openKey=now.key
+        }
         pre.push((<SubMenu
           key={now.key}
           title={
@@ -54,27 +64,32 @@ export default class LeftNav extends React.Component{
               <span>{now.title}</span>
             </span>
           }
-        >{this.createMenu(now.children)}
+        >{this.createMenu2(now.children)}
         </SubMenu>))
       }
       return pre
     },[])
   }
+
+  
  
   render(){
-    const {Sider} = Layout;
+    this.createMenu=this.createMenu2(menuConfig)
+    const pathname=this.props.location.pathname
+    const {Sider} = Layout
     return (
         <Sider className="left-nav">
-          <a className="left-nav-header" href="#1">
+          <a className="left-nav-header" href="/home">
             <img src={logo} alt="图片无法加载"/>
             <span>硅谷后台</span>
           </a>
-          <Menu theme="dark" defaultSelectedKeys={["/home"]} mode="inline">
+          <Menu theme="dark" mode="inline" selectedKeys={[pathname]} defaultOpenKeys={[this.openKey]}>
             {/* {this.createMenu(menuConfig)} */}
-            {this.createMenu2(menuConfig)}
+            {this.createMenu}
           </Menu>
         </Sider>
   
     )
   }
 }
+export default withRouter(LeftNav)

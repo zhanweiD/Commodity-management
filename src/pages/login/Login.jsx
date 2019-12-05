@@ -49,7 +49,7 @@ class Login extends React.Component{
       };
     render(){
         //判断是否已经登录过
-        if(memoryUtils.user){
+        if(memoryUtils.user._id){
             return <Redirect to="/"/>
         }
         const { getFieldDecorator } = this.props.form;
