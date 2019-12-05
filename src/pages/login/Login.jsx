@@ -1,12 +1,15 @@
 import React from "react"
 import { Form, Icon, Input, Button,message} from 'antd';
 import {Redirect} from "react-router-dom"
+import "./login.less"
 
 import {saveUser} from "../../utils/localStorageUtils"
 import memoryUtils from "../../utils/memoryUtils"
 import {reqLogin} from "../../api"
-import logo from "./images/logo.png"
-import "./login.less"
+import logo from "../../assets/images/logo.png"
+
+
+
 class Login extends React.Component{
     //自定义密码验证规则
     calidatepwd=(rule, value, callback)=>{
