@@ -81,7 +81,7 @@ class LeftNav extends React.Component{
         <Sider className="left-nav">
           <a className="left-nav-header" href="/home">
             <img src={logo} alt="图片无法加载"/>
-            <span>硅谷后台</span>
+            <span>郑工后台</span>
           </a>
           <Menu theme="dark" mode="inline" selectedKeys={[pathname]} defaultOpenKeys={[this.openKey]}>
             {/* {this.createMenu(menuConfig)} */}

@@ -2,7 +2,7 @@ import React from "react"
 import {Redirect,Switch,Route} from "react-router-dom"
 import { Layout } from 'antd'
 
-import LeftNav from "../../components/leftNav/leftNav"
+import LeftNav from "../../components/left-nav/leftNav"
 import memoryUtils from "../../utils/memoryUtils"
 import "./admin.less"
 

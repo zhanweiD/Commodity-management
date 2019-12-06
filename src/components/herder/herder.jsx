@@ -2,6 +2,7 @@ import React from "react"
 import { Modal } from 'antd';
 import {withRouter} from "react-router-dom"
 
+import LinkButton from "../link-button/linkButton"
 import {reqWeather} from "../../api"
 import {formateDate} from "../../utils/dateUtils"
 import menuConfig from "../../config/menuConfig"
@@ -11,6 +12,7 @@ import "./herder.less"
 
 class Header extends React.Component{
   state={time:formateDate(Date.now()),dayPictureUrl:"",weather:"",temperature:""}
+  //获取天气信息
   getWeather=async(city)=>{
     const {dayPictureUrl,weather,temperature}=await reqWeather(city)
     this.setState({dayPictureUrl,weather,temperature})
@@ -19,9 +21,8 @@ class Header extends React.Component{
     //1.开启定时器
     this.intervalId=setInterval(()=>{
       this.setState({time:formateDate(Date.now())})
-      this.getWeather("郑州")
     },1000)
-
+    this.getWeather("郑州")
   }
   componentWillUnmount(){
     clearInterval(this.intervalId)
@@ -63,7 +64,8 @@ class Header extends React.Component{
       <div className="layout-header">
         <div className="layout-header-top">
           <span>欢迎，{memoryUser.user.username}</span>
-          <button href="#1" onClick={this.showConfirm}>退出</button>
+          {/* <button onClick={this.showConfirm}>退出</button> */}
+          <LinkButton onClick={this.showConfirm}>退出</LinkButton>
         </div>
         <div className="layout-header-bottom">
           <h2 className="header-bottom-left">{showTitle}</h2>
