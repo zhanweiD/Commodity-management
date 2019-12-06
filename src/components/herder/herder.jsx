@@ -2,12 +2,30 @@ import React from "react"
 import { Modal } from 'antd';
 import {withRouter} from "react-router-dom"
 
+import {reqWeather} from "../../api"
+import {formateDate} from "../../utils/dateUtils"
 import menuConfig from "../../config/menuConfig"
 import {removeUser} from "../../utils/localStorageUtils"
 import memoryUser from "../../utils/memoryUtils"
 import "./herder.less"
 
 class Header extends React.Component{
+  state={time:formateDate(Date.now()),dayPictureUrl:"",weather:"",temperature:""}
+  getWeather=async(city)=>{
+    const {dayPictureUrl,weather,temperature}=await reqWeather(city)
+    this.setState({dayPictureUrl,weather,temperature})
+  }
+  componentDidMount(){
+    //1.开启定时器
+    this.intervalId=setInterval(()=>{
+      this.setState({time:formateDate(Date.now())})
+      this.getWeather("郑州")
+    },1000)
+
+  }
+  componentWillUnmount(){
+    clearInterval(this.intervalId)
+  }
   showConfirm=()=> {
     Modal.confirm({
       title: '你确定退出登录吗?',
@@ -38,7 +56,8 @@ class Header extends React.Component{
     })
     return title
   }
-  render(){   
+
+  render(){
     const showTitle=this.showTitle()
     return (
       <div className="layout-header">
@@ -49,9 +68,10 @@ class Header extends React.Component{
         <div className="layout-header-bottom">
           <h2 className="header-bottom-left">{showTitle}</h2>
           <div className="header-bottom-right">
-            <span>2019-12-5 21:2:30</span>
-            <img src="http://api.map.baidu.com/images/weather/day/qing.png" alt="天气"/>
-            <span>晴</span>
+            <span>{this.state.time}</span>
+            <img src={this.state.dayPictureUrl} alt="天气"/>
+            <span>{this.state.weather}</span>&nbsp;
+            <span>{this.state.temperature}</span>
           </div>
         </div>
       </div>

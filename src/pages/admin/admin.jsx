@@ -26,25 +26,24 @@ export default class Admin extends React.Component{
 
     const {Footer, Content} = Layout
     return(
-      <Layout className="layout" style={{height:"100%"}}>
+      <Layout className="layout">
         <LeftNav/>
         <Layout>
-          {/* <Header/> */}
           <Header/>
           <Content className="layout-content">
-          <Switch>
-              <Route path="/home" component={Home}/>
-              <Route path='/category' component={Category} />
-              <Route path='/product' component={Product} />
-              <Route path='/role' component={Role} />
-              <Route path='/user' component={User} />
-              <Route path='/charts/bar' component={Bar} />
-              <Route path='/charts/line' component={Line} />
-              <Route path='/charts/pie' component={Pie} />
-              <Redirect to="/home"/>
+            <Switch>
+                <Route path="/home" component={Home}/>
+                <Route path='/category' component={Category} />
+                <Route path='/product' component={Product} />
+                <Route path='/role' component={Role} />
+                <Route path='/user' component={User} />
+                <Route path='/charts/bar' component={Bar} />
+                <Route path='/charts/line' component={Line} />
+                <Route path='/charts/pie' component={Pie} />
+                <Redirect to="/home"/>
             </Switch>
           </Content>
-          <Footer className="layout-content-footer"><span>推荐使用谷歌浏览器，可以获得更佳页面操作体验</span></Footer>
+          <Footer className="layout-content-footer">推荐使用谷歌浏览器，可以获得更佳页面操作体验</Footer>
         </Layout>
     </Layout>
     )
