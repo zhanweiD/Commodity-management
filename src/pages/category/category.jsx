@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Card,Button,Icon,Table } from 'antd'
+import { Card,Button,Icon,Table,message } from 'antd'
 
-// import LinkButton from "../../components/link-button/linkButton"
+import LinkButton from "../../components/link-button/linkButton"
+import {reqCategorys} from "../../api" 
 const columns = [
   {
     title: '分类',
@@ -10,36 +11,29 @@ const columns = [
   },
   {
     title: '操作',
-    className: 'column-money' ,
     width:"30%",
-    dataIndex: 'money',
-  },
-];
-
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    money: '￥300,000.00',
-    address: 'New York No. 1 Lake Park',
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    money: '￥1,256,000.00',
-    address: 'London No. 1 Lake Park',
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    money: '￥120,000.00',
-    address: 'Sidney No. 1 Lake Park',
+    render:(category) => <LinkButton onClick={() => {
+      // this.category = category // 保存当前分类, 其它地方都可以读取到
+      // this.setState({ showStatus: 2})
+    }}>修改分类</LinkButton>
   },
 ];
 export default class Category extends Component{
-  render() {
-    
+  state={categorys:[]}
+  constructor(){
+    super()
+    this.getCategorys()
+  }
+  getCategorys=async()=>{
+    const result=await reqCategorys()
+    if(result.status===0){
+      this.setState({categorys:result.data})
+    }else{
+      message.error("分类信息获取失败")
+    }
 
+  }
+  render() {
     return (
       <Card extra={
         <Button type="primary">
@@ -49,9 +43,10 @@ export default class Category extends Component{
       }>
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={this.state.categorys}
           bordered
-          pagination={{ defaultPageSize: 2, showQuickJumper: true}}
+          rowKey="_id"
+          pagination={{ defaultPageSize: 6, showQuickJumper: true}}
         />
     </Card>
     )

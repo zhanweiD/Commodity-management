@@ -5,7 +5,13 @@ import { message } from "antd"
 
 export {
   reqLogin,
-  reqWeather
+  reqWeather,
+  reqCategorys
+}
+
+//3.获取商品分类
+function reqCategorys(){
+  return ajax("/manage/category/list")
 }
 
 //2.获取天气信息
