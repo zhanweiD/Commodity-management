@@ -6,10 +6,32 @@ import { message } from "antd"
 export {
   reqLogin,
   reqWeather,
-  reqCategorys
+  reqCategorys,
+  reqAddCategory,
+  reqUpdataCategory
 }
-
-//3.获取商品分类
+//5.修改分类名称
+function reqUpdataCategory(categoryId,categoryName){
+  return ajax({
+    method:"post",
+    url:"/manage/category/update",
+    data:{
+      categoryId,
+      categoryName
+    }
+  })
+}
+//4.添加分类名称
+function reqAddCategory(categoryName){
+  return ajax({
+    method:"post",
+    url:"/manage/category/add",
+    data:{
+      categoryName
+    }
+  })
+}
+//3.获取分类名称
 function reqCategorys(){
   return ajax("/manage/category/list")
 }
@@ -22,7 +44,7 @@ function reqWeather(city){
       if (error) {
         message.error("天气请求出错")
       }else{
-        const {dayPictureUrl,weather,temperature}=data.results[0].weather_data[3]
+        const {dayPictureUrl,weather,temperature}=data.results[0].weather_data[2]
         resolve({dayPictureUrl,weather,temperature})
       }
     })
