@@ -46,7 +46,7 @@ class Login extends React.Component{
             }
           }
         });
-      };
+      }
     render(){
         //判断是否已经登录过
         if(memoryUtils.user._id){

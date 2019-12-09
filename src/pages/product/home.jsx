@@ -1,14 +1,19 @@
 import React, { Component } from 'react'
 import {Link} from "react-router-dom"
-import {Card,Button,Icon,Form,Input,Select,Table,message} from "antd"
+import {Card,Button,Icon,Input,Select,Table,message} from "antd"
 import throttle from 'lodash.throttle'
 
-import {reqGetProducts,reqPutaway} from "../../api"
+import {reqGetProducts,reqPutaway,reqSearch} from "../../api"
 
-class ProductHome extends Component{
-  state={status:false,total:0,loading:false,
-    date:[]
-  }
+//每页显示个数
+const pageSize=4
+export default class ProductHome extends Component{
+  state={
+    searchType:"productName",
+    searchName:"",
+    total:0,
+    loading:false,
+    date:[]}
   columns=[
     {
       title: '商品名称',
@@ -22,7 +27,8 @@ class ProductHome extends Component{
     {
       title: '价格',
       dataIndex: 'price',
-      width:100
+      width:100,
+      render:(price)=><span>￥{price}</span>
     },
     {
       title: '状态',
@@ -38,16 +44,18 @@ class ProductHome extends Component{
     },
     {
       title: '操作',
-      width:100,
+      width:150,
       render:()=>{
         return (<div>
-          <Link to="/product/details">详情</Link><br/>
+          <Link to="/product/details">详情</Link>&nbsp;&nbsp;&nbsp;&nbsp;
           <Link to="/product/AddUpdatePro">修改</Link>
         </div>)
       }
     }
   ]
-  //更新商品上下架
+
+
+  //修改商品上下架
   updatePutaway=throttle(async(productId,status)=>{
     status=status===1? 2:1
     const result = await reqPutaway(productId,status)
@@ -59,8 +67,21 @@ class ProductHome extends Component{
   //获取商品列表
   getProducts=async(pageNum)=>{
     this.pageNum=pageNum
+    let result
     this.setState({loading:true})
-    const result=await reqGetProducts(pageNum,4)
+    //根据输入搜索信息查找商品
+    if(this.isSearch){
+      const searchMessage={
+        pageNum,
+        pageSize,
+        searchType:this.state.searchType,
+        searchName:this.state.searchName
+      }
+      result=await reqSearch(searchMessage)
+    }else{
+      //直接查找
+      result=await reqGetProducts(pageNum,pageSize)
+    }
     this.setState({loading:false})
     if(result.status===0){
       const {list,total}=result.data
@@ -73,46 +94,39 @@ class ProductHome extends Component{
     this.getProducts(1)
   }
   render() {
-    const {date,loading,total}=this.state
+    const {date,loading,total,searchType}=this.state
     const {Option}=Select
-    const {getFieldDecorator}=this.props.form
+    const title=(
+      <span>
+        <Select
+          style={{width:200}}
+          value={searchType} 
+          onChange={value=>this.setState({searchType:value})}
+        >
+          <Option value="productName">按名称搜索</Option>
+          <Option value="productDesc">按描述搜索</Option>
+        </Select>
+        <Input
+          placeholder="关键字"
+          style={{width:200,margin:"0 10px"}}
+          onChange={event=>this.setState({searchName:event.target.value})}
+        />
+        <Button type="primary" onClick={
+          ()=>{
+            this.isSearch=true
+            this.getProducts(1)
+            }
+          }>
+          搜索
+        </Button>
+      </span>
+    )
     const extra=(<Button type="primary" onClick={()=>{
       }}>
       <Icon type="plus"/>
       添加商品
     </Button>)
-    const title=(
-      <Form layout="inline"  onSubmit={this.handleSubmit}>
-        <Form.Item >
-          {getFieldDecorator('name', {
-            rules: [{ required: true, message: '请选择搜索方式' }],
-          })(
-            <Select
-            style={{width:200}}
-            
-            onChange={this.handleSelectChange}
-          >
-            <Option value="an">按名称搜索</Option>
-            <Option value="female">按描述搜索</Option>
-          </Select>,
-          )}
-        </Form.Item>
-        <Form.Item>
-          {getFieldDecorator('keyWord', {
-            rules: [{ required: true, message: '请输入关键字' }],
-          })(
-            <Input
-              placeholder="关键字"
-            />,
-          )}
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            搜索
-          </Button>
-        </Form.Item>
-      </Form>
-    )
+   
     return (
       <Card title={title} extra={extra} style={{ width: "100%" }}>
       <Table
@@ -121,11 +135,14 @@ class ProductHome extends Component{
           bordered
           loading={loading}
           rowKey="_id"
-          pagination={{ defaultPageSize:4, showQuickJumper: true,total,onChange:this.getProducts}}
+          pagination={{
+            defaultPageSize:pageSize, 
+            showQuickJumper: true,
+            total,
+            onChange:this.getProducts}}
         />
     </Card>
     )
   }
 }
-export default Form.create()(ProductHome)
  

@@ -10,7 +10,18 @@ export {
   reqAddCategory,
   reqUpdataCategory,
   reqGetProducts,
-  reqPutaway
+  reqPutaway,
+  reqSearch
+}
+//8.查找
+function reqSearch({pageNum,pageSize,searchType,searchName}) {
+  return ajax("/manage/product/search",{
+    params:{
+      pageNum,
+      pageSize,
+      [searchType]:searchName,
+    }
+  })
 }
 //7.商品上下架
 function reqPutaway(productId,status) {
