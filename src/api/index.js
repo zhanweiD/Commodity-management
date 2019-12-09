@@ -8,7 +8,28 @@ export {
   reqWeather,
   reqCategorys,
   reqAddCategory,
-  reqUpdataCategory
+  reqUpdataCategory,
+  reqGetProducts,
+  reqPutaway
+}
+//7.商品上下架
+function reqPutaway(productId,status) {
+  return ajax({
+    method:"post",
+    url:"/manage/product/updateStatus",
+    data:{
+      productId,
+      status 
+    }
+  })
+}
+//6.获取商品信息
+function reqGetProducts(pageNum,pageSize){
+  return ajax("/manage/product/list",{
+    params: { // 包含所有query参数的对象
+      pageNum,
+      pageSize
+    }})
 }
 //5.修改分类名称
 function reqUpdataCategory(categoryId,categoryName){

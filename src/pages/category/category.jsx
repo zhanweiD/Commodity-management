@@ -6,7 +6,7 @@ import LinkButton from "../../components/link-button/linkButton"
 import {reqCategorys,reqAddCategory,reqUpdataCategory} from "../../api" 
 
 export default class Category extends Component{
-  state={categorys:[],visible:0,loading:"false"}
+  state={categorys:[],visible:0,loading:false}
 
   columns = [
     {
@@ -53,22 +53,18 @@ export default class Category extends Component{
     this.form.resetFields()
     this.setState({visible:0})
   }
-  //渲染前加载出分类信息
-  constructor(){
-    super()
-    this.getCategorys()
-  }
+  
   //获取分类信息
   getCategorys=async()=>{
-    this.setState({loading:"true"})
+    this.setState({loading:true})
     const result=await reqCategorys()
-    this.setState({loading:"false"})
+    this.setState({loading:false})
     if(result.status===0){
       this.setState({categorys:result.data})
     }else{
       message.error("分类信息获取失败")
     }
-  }
+  }  
   //添加分类信息
   addCategory = async (categoryName)=>{
     const result=await reqAddCategory(categoryName)
@@ -94,6 +90,10 @@ export default class Category extends Component{
     }else{
       message.error("修改失败")
     }
+  }
+  //渲染前加载出分类信息
+  componentDidMount(){
+    this.getCategorys()
   }
   render() {
     const {loading,categorys,visible}=this.state
