@@ -4,6 +4,7 @@ import {Card,Button,Icon,Input,Select,Table,message} from "antd"
 import throttle from 'lodash.throttle'
 
 import {reqGetProducts,reqPutaway,reqSearch} from "../../api"
+// import LinkButton from "../../components/link-button/linkButton"
 
 //每页显示个数
 const pageSize=4
@@ -48,13 +49,18 @@ export default class ProductHome extends Component{
       render:()=>{
         return (<div>
           <Link to="/product/details">详情</Link>&nbsp;&nbsp;&nbsp;&nbsp;
-          <Link to="/product/AddUpdatePro">修改</Link>
+          <Link to="/product/addUpdatePro">修改</Link>
         </div>)
       }
     }
   ]
 
-
+  //判断搜索内容是否为空,为空退出搜索查询（可以不做）
+  searchNull=()=>{
+    if(!this.state.searchName){
+      this.isSearch=false
+    }
+  }
   //修改商品上下架
   updatePutaway=throttle(async(productId,status)=>{
     status=status===1? 2:1
@@ -130,16 +136,18 @@ export default class ProductHome extends Component{
     return (
       <Card title={title} extra={extra} style={{ width: "100%" }}>
       <Table
-          columns={this.columns}
-          dataSource={date}
-          bordered
-          loading={loading}
-          rowKey="_id"
+          columns={this.columns}//字段
+          dataSource={date}//数据源，数组
+          bordered//边框
+          loading={loading}//加载状态
+          rowKey="_id"//每个数据的唯一标识
           pagination={{
-            defaultPageSize:pageSize, 
-            showQuickJumper: true,
-            total,
-            onChange:this.getProducts}}
+            defaultPageSize:pageSize, //每页显示个数
+            showQuickJumper: true,//是否支持快速跳转
+            total,//总数据条数。，生成页数
+            onChange:this.getProducts,//页数改变触发，参数为函数会向其传递一个页数参数
+            current: this.pageNum //当前页数
+          }}
         />
     </Card>
     )

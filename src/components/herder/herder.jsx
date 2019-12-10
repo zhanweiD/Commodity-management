@@ -49,7 +49,7 @@ class Header extends React.Component{
           title=item.title
         }
       }else{
-        const childItem=item.children.find(item=>item.key===titlekey)
+        const childItem=item.children.find(item=>titlekey.indexOf(item.key)===0)
         if(childItem){
           title=childItem.title
         }

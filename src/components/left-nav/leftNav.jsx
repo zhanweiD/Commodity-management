@@ -53,7 +53,7 @@ class LeftNav extends React.Component{
       }else{
         //根据孩子的key找到父亲的key
         const childrenKey=this.props.location.pathname
-        if(now.children.find(item=>item.key===childrenKey)){
+        if(now.children.find(item=>childrenKey.indexOf(item.key)===0)){
           this.openKey=now.key
         }
         pre.push((<SubMenu
@@ -75,7 +75,10 @@ class LeftNav extends React.Component{
  
   render(){
     this.createMenu=this.createMenu2(menuConfig)
-    const pathname=this.props.location.pathname
+    let pathname=this.props.location.pathname
+    if (pathname.indexOf('/product')===0) {
+      pathname = '/product'
+    }
     const {Sider} = Layout
     return (
         <Sider className="left-nav">
