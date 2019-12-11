@@ -11,7 +11,80 @@ export {
   reqUpdataCategory,
   reqGetProducts,
   reqPutaway,
-  reqSearch
+  reqSearch,
+  reqUpdate,
+  reqDeleteImg,
+  reqAddProduct,
+  reqUpdateProduct,
+  reqGetClassify,
+  reqProduct
+}
+//14.根据商品ID获取商品信息
+function reqProduct(productId) {
+  return ajax("/manage/product/info",{
+    params:{
+      productId
+    }
+  })
+}
+//13.根据分类ID获取商品分类
+function reqGetClassify(categoryId) {
+  return ajax("/manage/category/info",{
+    params:{
+      categoryId
+    }
+  })
+}
+//12.修改商品
+function reqUpdateProduct({_id,categoryId,name,desc,price,detail,imgs}) {
+  return ajax({
+    method:"post",
+    url:"/manage/product/update",
+    data:{
+      _id,
+      categoryId,
+      name,
+      desc,
+      price,
+      detail,
+      imgs
+    }
+  })
+}
+//11.添加商品
+function reqAddProduct({categoryId,name,desc,price,detail,imgs}) {
+  return ajax({
+    method:"post",
+    url:"/manage/product/add",
+    data:{
+      categoryId,
+      name,
+      desc,
+      price,
+      detail,
+      imgs
+    }
+  })
+}
+//10.上传图片
+function reqUpdate(image) {
+  return ajax({
+    method:"post",
+    url:"/manage/img/upload",
+    data:{
+      image
+    }
+  })
+}
+//9.删除图片
+function reqDeleteImg(name) {
+  return ajax({
+    method:"post",
+    url:"/manage/img/delete",
+    data:{
+      name
+    }
+  })
 }
 //8.查找
 function reqSearch({pageNum,pageSize,searchType,searchName}) {

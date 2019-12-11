@@ -4,5 +4,6 @@ import {getUser} from "./localStorageUtils"
 const user=getUser()
 //暴漏出去一个对象，通过对象.user的方式可以间接修改user的值
 export default{
-  user
+  user,
+  product:{}    //存放商品信息
 }

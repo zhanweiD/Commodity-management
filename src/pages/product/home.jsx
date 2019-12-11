@@ -4,10 +4,10 @@ import {Card,Button,Icon,Input,Select,Table,message} from "antd"
 import throttle from 'lodash.throttle'
 
 import {reqGetProducts,reqPutaway,reqSearch} from "../../api"
+import memoryUtils from "../../utils/memoryUtils"
 // import LinkButton from "../../components/link-button/linkButton"
-
 //每页显示个数
-const pageSize=4
+const pageSize=5
 export default class ProductHome extends Component{
   state={
     searchType:"productName",
@@ -46,14 +46,23 @@ export default class ProductHome extends Component{
     {
       title: '操作',
       width:150,
-      render:()=>{
+      render:(product)=>{
         return (<div>
-          <Link to="/product/details">详情</Link>&nbsp;&nbsp;&nbsp;&nbsp;
-          <Link to="/product/addUpdatePro">修改</Link>
+          <Link onClick={()=>{memoryUtils.product=product}}
+            to="/product/details"  
+          >
+            详情
+          </Link>&nbsp;&nbsp;&nbsp;&nbsp;
+          <Link onClick={()=>memoryUtils.product=product} 
+            to="/product/addUpdatePro"
+          >
+            修改
+          </Link>
         </div>)
       }
     }
   ]
+  
 
   //判断搜索内容是否为空,为空退出搜索查询（可以不做）
   searchNull=()=>{
@@ -61,6 +70,7 @@ export default class ProductHome extends Component{
       this.isSearch=false
     }
   }
+
   //修改商品上下架
   updatePutaway=throttle(async(productId,status)=>{
     status=status===1? 2:1
@@ -128,7 +138,9 @@ export default class ProductHome extends Component{
       </span>
     )
     const extra=(<Button type="primary" onClick={()=>{
-      }}>
+      this.props.history.push('/product/addUpdatePro')
+      memoryUtils.product={}}
+    }>
       <Icon type="plus"/>
       添加商品
     </Button>)
