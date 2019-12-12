@@ -5,16 +5,18 @@ import throttle from 'lodash.throttle'
 
 import {reqGetProducts,reqPutaway,reqSearch} from "../../api"
 import memoryUtils from "../../utils/memoryUtils"
-// import LinkButton from "../../components/link-button/linkButton"
 //每页显示个数
 const pageSize=5
 export default class ProductHome extends Component{
   state={
+    categoryName:"",
+    categoryId:"",
     searchType:"productName",
     searchName:"",
     total:0,
     loading:false,
-    date:[]}
+    date:[]
+  }
   columns=[
     {
       title: '商品名称',
@@ -49,7 +51,7 @@ export default class ProductHome extends Component{
       render:(product)=>{
         return (<div>
           <Link onClick={()=>{memoryUtils.product=product}}
-            to="/product/details"  
+            to={`/product/details${product._id}`}  
           >
             详情
           </Link>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -108,6 +110,7 @@ export default class ProductHome extends Component{
   }
   componentDidMount(){
     this.getProducts(1)
+    console.log(memoryUtils.categorys)
   }
   render() {
     const {date,loading,total,searchType}=this.state

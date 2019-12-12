@@ -46,7 +46,7 @@ export default class Admin extends React.Component{
           <Footer className="layout-content-footer"
             style={{ textAlign: 'center', color: 'rgba(0, 0, 0, 0.5)'}}
           >
-            推荐使用谷歌浏览器，可以获得更佳页面操作体验
+            推荐使用谷歌浏览器，可以获得最佳页面操作体验
           </Footer>
         </Layout>
     </Layout>

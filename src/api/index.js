@@ -149,7 +149,7 @@ function reqWeather(city){
       if (error) {
         message.error("天气请求出错")
       }else{
-        const {dayPictureUrl,weather,temperature}=data.results[0].weather_data[2]
+        const {dayPictureUrl,weather,temperature}=data.results[0].weather_data[0]
         resolve({dayPictureUrl,weather,temperature})
       }
     })

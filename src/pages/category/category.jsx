@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Card,Button,Icon,Table,message,Modal } from 'antd'
 
+import memoryUtils from "../../utils/memoryUtils"
 import AddUpdateModel from "./addUpdateModel"
 import LinkButton from "../../components/link-button/linkButton"
 import {reqCategorys,reqAddCategory,reqUpdataCategory} from "../../api" 
@@ -60,7 +61,9 @@ export default class Category extends Component{
     const result=await reqCategorys()
     this.setState({loading:false})
     if(result.status===0){
+      console.log(result)
       this.setState({categorys:result.data})
+      memoryUtils.categorys=result.data
     }else{
       message.error("分类信息获取失败")
     }

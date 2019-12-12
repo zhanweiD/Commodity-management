@@ -117,6 +117,7 @@ class RegistrationForm extends React.Component {
             {getFieldDecorator("price",{
               initialValue:product.price,
               rules:[
+                {required:true,message:"商品价格不能为空"},
                 {validator:this.validatorPrice}
               ],
             })(

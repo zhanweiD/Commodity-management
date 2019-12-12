@@ -1,46 +1,40 @@
 import React, { Component } from 'react'
 import {Card,Icon,List} from "antd"
 
-import {reqGetClassify} from "../../api"
+import {reqGetClassify,reqProduct} from "../../api"
 import LinkButton from "../../components/link-button/linkButton"
 import memoryUtils from "../../utils/memoryUtils"
-//,reqProduct
+
 const {Item}=List
 export default class Details extends Component{
   state={
     product:memoryUtils.product,
     categoryName:""
   }
-  //获取商品分类名称
+  //根据商品ID获取商品信息
+  getProduct=async(productId)=>{
+    const result=await reqProduct(productId)
+    if(result.status===0){
+      const product=result.data
+      this.setState({product})
+      this.getDetails(product.categoryId)
+    }
+  }
+  //根据分类ID获取商品分类名称
   getDetails=async(categoryId)=>{
-    console.log(categoryId)
     const result=await reqGetClassify(categoryId)
     if(result.status===0){
-      console.log(result)
       this.setState({categoryName:result.data.name})
     }
   }
-  // async componentDidMount () {
-  //   let product = this.state.product
-  //   if (product._id) { // 如果商品有数据, 获取对应的分类
-  //     this.getDetails(product.categoryId)
-  //   } else { // 如果当前product状态没有数据, 根据id参数中请求获取商品并更新
-  //     const id = this.props.match.params.id
-  //     console.log(this.props.match.params)
-  //     const result = await reqProduct(id)
-  //     if (result.status === 0) {
-  //       product = result.data
-  //       this.setState({
-  //         product
-  //       })
-  //       this.getDetails(product.categoryId) // 获取对应的分类
-  //     }
-  //   }
-  // }
-  根据商品分类ID获取分类名称
+
   componentDidMount(){
-    if(memoryUtils.product.categoryId){
-      this.getDetails(memoryUtils.product.categoryId)
+    let {product}=this.state
+    if(product.categoryId){
+      this.getDetails(product.categoryId)
+    }else{
+      const productId=this.props.match.params.id
+      this.getProduct(productId)
     }
   }
   render() {
@@ -55,7 +49,7 @@ export default class Details extends Component{
     )
     return (
      <Card title={title}>
-       <List>
+       <List className="detail">
          <Item>
            <span>商品名称:</span>
            <span>{product.name}</span>
@@ -78,7 +72,7 @@ export default class Details extends Component{
          </Item>
          <Item>
            <span>商品详情:</span>
-           <div dangerouslySetInnerHTML={{ __html: product.detail}}></div>
+           <span dangerouslySetInnerHTML={{ __html: product.detail}} className="detail-detail"></span>
          </Item>
        </List>
      </Card>
