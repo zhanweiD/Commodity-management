@@ -61,7 +61,6 @@ export default class Category extends Component{
     const result=await reqCategorys()
     this.setState({loading:false})
     if(result.status===0){
-      console.log(result)
       this.setState({categorys:result.data})
       memoryUtils.categorys=result.data
     }else{

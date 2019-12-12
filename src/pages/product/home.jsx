@@ -3,14 +3,13 @@ import {Link} from "react-router-dom"
 import {Card,Button,Icon,Input,Select,Table,message} from "antd"
 import throttle from 'lodash.throttle'
 
-import {reqGetProducts,reqPutaway,reqSearch} from "../../api"
+import {reqGetProducts,reqPutaway,reqSearch,reqCategorys} from "../../api"
 import memoryUtils from "../../utils/memoryUtils"
 //每页显示个数
 const pageSize=5
 export default class ProductHome extends Component{
   state={
-    categoryName:"",
-    categoryId:"",
+    category:{},
     searchType:"productName",
     searchName:"",
     total:0,
@@ -20,12 +19,18 @@ export default class ProductHome extends Component{
   columns=[
     {
       title: '商品名称',
-      width:200,
+      width:150,
       dataIndex: 'name',
     },
     {
       title: '商品描述',
       dataIndex: 'desc',
+    },
+    {
+      title: '分类',
+      dataIndex: 'categoryId',
+      width:100,
+      render:(categoryId)=>this.state.category[categoryId]
     },
     {
       title: '价格',
@@ -73,6 +78,18 @@ export default class ProductHome extends Component{
     }
   }
 
+  //获取分类信息
+  getCategorys=async()=>{
+    const result=await reqCategorys()
+    if(result.status===0){
+      const category=result.data.reduce((pre,now)=>{
+        pre[now._id]=now.name
+        return pre
+      },{})
+      this.setState({category})
+    }
+  }  
+
   //修改商品上下架
   updatePutaway=throttle(async(productId,status)=>{
     status=status===1? 2:1
@@ -110,7 +127,7 @@ export default class ProductHome extends Component{
   }
   componentDidMount(){
     this.getProducts(1)
-    console.log(memoryUtils.categorys)
+    this.getCategorys()
   }
   render() {
     const {date,loading,total,searchType}=this.state
