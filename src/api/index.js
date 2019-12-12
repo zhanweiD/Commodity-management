@@ -17,7 +17,34 @@ export {
   reqAddProduct,
   reqUpdateProduct,
   reqGetClassify,
-  reqProduct
+  reqProduct,
+  reqGetRoles,
+  reqAddRole,
+  reqRemoveRole
+}
+//17.删除角色
+function reqRemoveRole(roleId) {
+  return ajax({
+    method:"post",
+    url:"/manage/role/remove",
+    data:{
+      roleId
+    }
+  })
+}
+//16.添加角色
+function reqAddRole(roleName) {
+  return ajax({
+    method:"post",
+    url:"/manage/role/add",
+    data:{
+      roleName
+    }
+  })
+}
+//15.获取角色列表
+function reqGetRoles(){
+  return ajax("/manage/role/list")
 }
 //14.根据商品ID获取商品信息
 function reqProduct(productId) {
