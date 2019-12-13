@@ -14,6 +14,8 @@ export default class UpdateRote extends React.Component {
   
   state={checkedKeys:[]}  //拿不到props的数据this.props.role.menus
 
+  setMenus=()=>this.state.checkedKeys   //父组件获取当前状态信息
+  
   //根据config生成treeNode树
   createTreeNode=(treeArr)=>{
     return treeArr.reduce((pre,item)=>{
@@ -80,10 +82,10 @@ export default class UpdateRote extends React.Component {
           <Input value={role.name} disabled/>
         </Item>
         <Tree
-        checkable                    //选择框
-        defaultExpandAll            //默认全部展开
-        checkedKeys={checkedKeys}  //将实时选中状态写入组件状态
-        onCheck={this.handleCheck}
+        checkable                     //选择框
+        defaultExpandAll              //默认全部展开
+        checkedKeys={checkedKeys}     //根据组件状态选中对应节点
+        onCheck={this.handleCheck}   //将实时选中状态写入组件状态，可控组件，实时写入状态
       >
         <TreeNode title="平台权限" key="all">
           {this.role}

@@ -20,7 +20,21 @@ export {
   reqProduct,
   reqGetRoles,
   reqAddRole,
-  reqRemoveRole
+  reqRemoveRole,
+  reqUpdataRole
+}
+//18.更新角色，设置权限
+function reqUpdataRole({_id,menus,auth_time,auth_name}) {
+  return ajax({
+    method:"post",
+    url:"/manage/role/update",
+    data:{
+      _id,
+      menus,
+      auth_time,
+      auth_name
+    }
+  })
 }
 //17.删除角色
 function reqRemoveRole(roleId) {

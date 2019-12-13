@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import {Card,Button,Table, message,Modal} from "antd"
 
+import {formateDate} from "../../utils/dateUtils"
 import UpdateRole from "./update-role"
 import AddRole from "./add-role"
-import {reqGetRoles,reqAddRole,reqRemoveRole} from "../../api"
+import {reqGetRoles,reqAddRole,reqRemoveRole,reqUpdataRole} from "../../api"
 import memoryUtils from "../../utils/memoryUtils"
 import LinkButton from "../../components/link-button/linkButton"
 
 const pageSize=6
 export default class Role extends Component{
 
+  updateMenus=React.createRef()
   state={
     date:[],
     loading:false,
@@ -27,11 +29,13 @@ export default class Role extends Component{
       title: '创建时间',
       width:250,
       dataIndex: 'create_time',
+      render:formateDate
     },
     {
       title: '授权时间',
       width:250,
       dataIndex: 'auth_time',
+      render:formateDate
     },
     {
       title: '授权人',
@@ -45,18 +49,31 @@ export default class Role extends Component{
         return (
           <span>
             <LinkButton 
-            onClick={()=>{
-              this.setState({updateRole:true})
-              this.role=role
-            }}>权限设置</LinkButton>&nbsp;&nbsp;
-            <LinkButton onClick={()=>this.removeRole(role._id)}>删除角色</LinkButton>
+              onClick={()=>{
+                this.setState({updateRole:true})
+                this.role=role
+              }}>权限设置</LinkButton>&nbsp;&nbsp;
+            <LinkButton
+              onClick={()=>{
+                this.showConfirm(role)
+              }}>删除角色</LinkButton>
           </span>
         )
       }
     }
   ]
 
-  //修改角色权限
+  //更新角色权限
+  updataRole=async(role)=>{
+    const result = await reqUpdataRole(role)
+    if(result.status===0){
+      message.success("权限设置成功")
+      this.role=result.data
+      this.getRoles()
+    }else{
+      message.error(result.msg)
+    }
+  }
 
   //删除指定角色
   removeRole=async(roleId)=>{
@@ -67,6 +84,16 @@ export default class Role extends Component{
     }else{
       message.error(result.msg)
     }
+  }
+  showConfirm=(role)=> {
+    Modal.confirm({
+      title: `你确定删除${role.name}角色吗?`,
+      onOk:()=> {
+        this.removeRole(role._id)
+      },
+      // onCancel:()=> {
+      // },
+    });
   }
 
   //获取角色列表
@@ -110,6 +137,14 @@ export default class Role extends Component{
     this.form.resetFields()
   }
   updateRoleOk=()=>{
+    const menus=this.updateMenus.current.setMenus()
+    const role={
+      _id:this.role._id,
+      menus,
+      auth_time:Date.now(),
+      auth_name:memoryUtils.user.username
+    }
+    this.updataRole(role)
     this.setState({updateRole:false})
   }
   updateRoleCancel=()=>{
@@ -151,7 +186,7 @@ export default class Role extends Component{
           onCancel={this.updateRoleCancel}
         >
           {/* setForm={this.setForm} */}
-          <UpdateRole role={this.role}/>
+          <UpdateRole ref={this.updateMenus} role={this.role}/>
         </Modal>
       
      </Card>
