@@ -72,9 +72,13 @@ export default class UpdateRote extends React.Component {
     const {checkedKeys}=this.state
     const role=this.props.role||{}
     // 指定Item布局的配置对象
-    const formItemLayout = {
-      labelCol: { span: 4 },  // 左侧label的宽度
-      wrapperCol: { span: 15 }, // 右侧包裹的宽度
+    // const formItemLayout = {
+    //   labelCol: { span: 4 },  // 左侧label的宽度
+    //   wrapperCol: { span: 15 }, // 右侧包裹的宽度
+    // }
+    const formItemLayout={
+      labelCol:{span:4},
+      wrapperCol:{span:15}
     }
     return (
       <div>

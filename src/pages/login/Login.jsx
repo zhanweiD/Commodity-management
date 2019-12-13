@@ -106,5 +106,4 @@ class Login extends React.Component{
     }
 }
 //包装login组件，向其传入form参数
-const WrapLoginForm = Form.create()(Login);
-export default WrapLoginForm
+export default Form.create()(Login);

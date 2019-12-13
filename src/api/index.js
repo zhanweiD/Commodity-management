@@ -21,7 +21,53 @@ export {
   reqGetRoles,
   reqAddRole,
   reqRemoveRole,
-  reqUpdataRole
+  reqUpdataRole,
+  reqGetUsers,
+  reqRemoveUser,
+  reqAddUser,
+  reqUpdateUser
+}
+//22.修改用户
+function reqUpdateUser({_id,username,phone,email,role_id}) {
+  return ajax({
+    method:"post",
+    url:"/manage/user/update",
+    data:{
+      _id,
+      username,
+      phone,
+      email,
+      role_id
+    }
+  })
+}
+//21.添加用户
+function reqAddUser({username,password,phone,email,role_id}) {
+  return ajax({
+    method:"post",
+    url:"/manage/user/add",
+    data:{
+      username,
+      password,
+      phone,
+      email,
+      role_id
+    }
+  })
+}
+//20.删除用户
+function reqRemoveUser(userId) {
+  return ajax({
+    method:"post",
+    url:"/manage/user/delete",
+    data:{
+      userId
+    }
+  })
+}
+//19.获取所有用户列表
+function reqGetUsers() {
+  return ajax("/manage/user/list")
 }
 //18.更新角色，设置权限
 function reqUpdataRole({_id,menus,auth_time,auth_name}) {

@@ -133,9 +133,7 @@ class RegistrationForm extends React.Component {
             })(
               <Select>
                 <Option value=''>未选择</Option>
-                {categorys.map((item)=>{
-                  return <Option value={item._id} key={item._id}>{item.name}</Option>
-                })}
+                {categorys.map(item=><Option value={item._id} key={item._id}>{item.name}</Option>)}
             </Select>
             )}
           </Item>
