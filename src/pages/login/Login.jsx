@@ -68,9 +68,8 @@ class Login extends React.Component{
                             initialValue: '',          //初始值
                            rules: [
                                { required: true, message: '请输入用户名' },
-                               {min:4,message:"用户名不小于4位"},
-                               {max:12,message:"用户名不能大于12位"},
-                               {pattern:/[a-zA-Z0-9_]/,message:"用户名为数字字母下划线"}
+                               {min:2,message:"用户名不小于4位"},
+                               {max:12,message:"用户名不能大于12位"}
                             ]
                         })(
                             <Input

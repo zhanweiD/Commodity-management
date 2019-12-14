@@ -13,12 +13,13 @@ export default class Role extends Component{
 
   updateMenus=React.createRef()
   state={
-    date:[],
-    loading:false,
-    addRole:false,
-    updateRole:false
+    date:[],         //表格数据源
+    loading:false,   //是否加载
+    addRole:false,   //是否显示添加对话框
+    updateRole:false //是否显示设置权限对话框
   }
 
+  //表格字段设置
   columns=[
     {
       title: '角色名称',
@@ -40,7 +41,7 @@ export default class Role extends Component{
     {
       title: '授权人',
       width:150,
-      render:()=>memoryUtils.user.username
+      dataIndex: 'auth_name'
     },
     {
       title: '操作',
@@ -85,6 +86,7 @@ export default class Role extends Component{
       message.error(result.msg)
     }
   }
+  //是否删除对话框
   showConfirm=(role)=> {
     Modal.confirm({
       title: `你确定删除${role.name}角色吗?`,
@@ -98,7 +100,9 @@ export default class Role extends Component{
 
   //获取角色列表
   getRoles=async()=>{
+    this.setState({loading:true})
     const result = await reqGetRoles()
+    this.setState({loading:false})
     if(result.status===0){
       this.setState({date:result.data})
     }
@@ -128,28 +132,32 @@ export default class Role extends Component{
       }
     })
   }
+  //点击添加OK后的回调
   handleOk=()=>{
     this.handleSumbit()
     this.form.resetFields()
   }
+  //点击取消后的回调
   handleCancel=()=>{
     this.setState({addRole:false})
     this.form.resetFields()
   }
+  //权限设置点击确认回调
   updateRoleOk=()=>{
-    const menus=this.updateMenus.current.setMenus()
     const role={
       _id:this.role._id,
-      menus,
+      menus:this.updateMenus.current.setMenus(),
       auth_time:Date.now(),
       auth_name:memoryUtils.user.username
     }
     this.updataRole(role)
     this.setState({updateRole:false})
   }
+  //权限设置取消回调
   updateRoleCancel=()=>{
     this.setState({updateRole:false})
   }
+
   componentDidMount(){
     this.getRoles()
   }
@@ -173,7 +181,7 @@ export default class Role extends Component{
        />
        <Modal
           title="创建角色"
-          visible={addRole}
+          visible={addRole}  //是否可见
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
@@ -188,7 +196,6 @@ export default class Role extends Component{
           {/* setForm={this.setForm} */}
           <UpdateRole ref={this.updateMenus} role={this.role}/>
         </Modal>
-      
      </Card>
     )
   }

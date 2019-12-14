@@ -11,7 +11,8 @@ export default class User extends Component{
   state={
     data:[],
     visible: false,
-    roles:{}
+    roles:{},
+    loading:false
   }
   columns=[
     {
@@ -93,7 +94,9 @@ export default class User extends Component{
   }
   //获取所有用户
   getUsers=async()=>{
+    this.setState({loading:true})
     const result = await reqGetUsers()
+    this.setState({loading:false})
     if(result.status===0){
       this.setState({data:result.data.users})
     }
@@ -151,7 +154,7 @@ export default class User extends Component{
     this.getRoles()
   }
   render() {
-    const {data}=this.state
+    const {data,loading}=this.state
     const title=(
       <Button type="primary" onClick={()=>{
         this.showModal()
@@ -167,6 +170,7 @@ export default class User extends Component{
          dataSource={data}//数据源，数组
          bordered//边框
          rowKey="_id"//每个数据的唯一标识
+         loading={loading}
          pagination={{ defaultPageSize: pageSize, showQuickJumper: true}}
        />
        <Modal
