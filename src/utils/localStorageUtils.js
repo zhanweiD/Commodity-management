@@ -4,7 +4,7 @@ import store from "store"
 export{
   saveUser,
   getUser,
-  removeUser,
+  removeUser, 
 }
 function saveUser(user){
   store.set("key_user",user)
