@@ -12,29 +12,8 @@
 ## 3. git管理项目
     1). 创建远程仓库
     2). 创建本地仓库
-        配置.gitignore
-        git init
-        git add .
-        git commit -m "init"
     3). 将本地仓库推送到远程仓库
-        git remote add origin url
-        git push origin master
     4). 在本地创建dev分支, 并推送到远程
-        git checkout -b dev
-        git push origin dev
-    5). 如果本地有修改
-        git add .
-        git commit -m "xxx"
-        git push origin dev
-    6). 新的同事: 克隆仓库
-        git clone url
-        git checkout -b dev origin/dev
-        git pull origin dev
-    7). 如果远程修改了
-        git pull origin dev
-    8). 如何得到后面新增的远程分支
-        git pull
-        git checkout -b dev origin/xxx
         
 ## 4. 创建项目的基本结构
     api: ajax请求的模块
@@ -73,11 +52,6 @@
       Icon
       Button
 
-## 8. 相关知识点
-    1). 区别开发环境运行和生产环境打包运行
-    2). 路由的理解
-
-
 # day02
 
 ## 1. 收集表单数据和表单的前台验证
@@ -104,20 +78,6 @@
               if(!error) {通过了验证, 发送ajax请求}
             })
 
- ## 2. 高阶函数与高阶组件
-    1). 高阶函数
-        定义: 接收的参数是函数或者返回值是函数
-        常见的: 数组遍历相关的方法 / 定时器 / Promise / 高阶组件 / fn.bind(obj)()
-        作用: 实现一个更加强大, 动态的功能
-
-    2). 高阶组件: 
-        本质是一个函数
-        函数接收一个组件, 返回一个新的组件
-        Form.create()返回的就是一个高阶组件   
-    
-    3). 高阶组件与高阶函数的关系
-        高阶组件是特别的高阶函数
-        接收一个组件函数, 返回是一个新的组件函数
 
 ## 3. 后台应用
     启动后台应用: mongodb服务必须启动
@@ -140,29 +100,6 @@
     3). 解决ajax跨域请求问题(开发时)
         办法: 配置代理  ==> 开发的配置不能用于生产环境
         编码: package.json: proxy: "http://localhost:5000"
-
-    4). 对代理的理解
-        a. 是什么?
-            具有特定功能的程序: webpack-dev-server ==> http-proxy-middleware
-        b. 运行在哪?
-            前台应用端, 不在后台应用端
-            只能在开发时使用
-        c. 作用?
-            解决开发时的ajax请求跨域问题
-            a. 监视并拦截请求(3000)
-            b. 转发请求(4000)
-        d. 配置代理
-            告诉代理服务器一些信息: 比如转发的目标地址
-            开发环境: 前端工程师
-            生产环境: 后端工程师
-    5). async和await的理解和使用
-        a. 作用?
-           简化promise对象的使用: 不用再使用then()来指定成功/失败的回调函数
-           以同步编码(没有回调函数了)方式实现异步流程
-        b. 哪里写await?
-            在返回promise的表达式左侧写await: 不想要promise, 想要promise异步执行的成功的value数据
-        c. 哪里写async?
-            await所在函数(最近的)定义的左侧写async
 
 ## 5. 实现登陆(包含自动登陆)
     login.jsx
@@ -303,9 +240,6 @@
         请求接口: 
             需要指定请求参数: 页码(pageNum)和每页数量(pageSize)
             响应数据: 当前页数据的数组 + 总记录数(total)
-    
-    3). 如何选择?
-        基本根据数据多少来选择
         
 ## 8. ProductHome组件
     1). 分页显示
