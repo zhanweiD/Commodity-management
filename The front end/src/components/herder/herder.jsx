@@ -17,13 +17,13 @@ class Header extends React.Component{
     const {dayPictureUrl,weather,temperature}=await reqWeather(city)
     this.setState({dayPictureUrl,weather,temperature})
   }
-  // componentDidMount(){
-  //   //1.开启定时器
-  //   this.intervalId=setInterval(()=>{
-  //     this.setState({time:formateDate(Date.now())})
-  //   },1000)
-  //   this.getWeather("郑州")
-  // }
+  componentDidMount(){
+    //1.开启定时器
+    this.intervalId=setInterval(()=>{
+      this.setState({time:formateDate(Date.now())})
+    },1000)
+    this.getWeather("郑州")
+  }
   componentWillUnmount(){
     clearInterval(this.intervalId)
   }
