@@ -18,7 +18,7 @@ class Header extends React.Component{
     this.setState({dayPictureUrl,weather,temperature})
   }
   componentDidMount(){
-    //1.开启定时器
+    //1.开启定时器，实时获取时间
     this.intervalId=setInterval(()=>{
       this.setState({time:formateDate(Date.now())})
     },1000)
@@ -35,9 +35,6 @@ class Header extends React.Component{
         memoryUser.user={}
         this.props.history.replace('/login')
       },
-      // onCancel:()=> {
-
-      // },
     });
   }
   showTitle=()=>{
